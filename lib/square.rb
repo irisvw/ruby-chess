@@ -2,11 +2,11 @@ class Square
   attr_accessor :value
 
   def initialize
-    @value = "‧"
+    @value = "·"
   end
 
   def to_s
-    @value
+    @value.to_s
   end
 
 end

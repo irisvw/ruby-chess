@@ -10,7 +10,6 @@ Piece
 
 ### Board
 - 8 x 8 grid (a-h, 1-8)
-- alternately colored?
 
 ### Squares
 - x, y

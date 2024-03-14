@@ -19,3 +19,8 @@
 - When taking, the pawn goes one square diagonally forward.
 - Pawns that reach the last row of the board promote. 
 
+## Moves
+### Castling
+
+### En passant
+

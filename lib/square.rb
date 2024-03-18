@@ -1,7 +1,9 @@
 class Square
-  attr_accessor :value
+  attr_accessor :value, :x, :y
 
-  def initialize
+  def initialize(x, y)
+    @x = x
+    @y = y
     @value = "·"
   end
 

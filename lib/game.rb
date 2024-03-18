@@ -7,7 +7,6 @@ class Game
   end
 
   def play
-    @board.starting_pieces
     @board.display
   end
 

@@ -1,11 +1,17 @@
 class Piece
+  attr_reader :color
 
-  def initialize
+  def initialize(color)
+    @color = color
   end
 
   def diagonal
     # get adjacent empty squares on the diagonal, until it runs into a piece. 
-    # keep square if enemy piece, discard square if friendly piece. 
+    # keep square if enemy piece, discard square if friendly piece.
+
+    # return square if enemy square
+
+    # diagonal(square)
   end
 
   def horizontal
@@ -18,6 +24,13 @@ class Piece
     # keep square if enemy piece, discard square if friendly piece. 
   end
 
+  # def moves(square, direction, array = [])
+  #   return square if square.value != "." || square.nil?
+  #   next_square = square.x + direction[0], square.y + direction[1]
+
+  #   array << moves(, direction)
+  # end
+
   def to_s
     @symbol
   end
@@ -26,7 +39,8 @@ end
 
 class Queen < Piece
 
-  def initialize
+  def initialize(color)
+    super(color)
     @symbol = "♛"
   end
 
@@ -38,7 +52,8 @@ end
 
 class King < Piece
 
-  def initialize
+  def initialize(color)
+    super(color)
     @symbol = "♚"
   end
 
@@ -52,7 +67,8 @@ end
 
 class Knight < Piece
 
-  def initialize
+  def initialize(color)
+    super(color)
     @symbol = "♞"
   end
 
@@ -66,7 +82,8 @@ end
 
 class Rook < Piece
 
-  def initialize
+  def initialize(color)
+    super(color)
     @symbol = "♜"
   end
 
@@ -78,7 +95,8 @@ end
 
 class Bishop < Piece
 
-  def initialize
+  def initialize(color)
+    super(color)
     @symbol = "♝"
   end
 
@@ -90,7 +108,8 @@ end
 
 class Pawn < Piece
 
-  def initialize
+  def initialize(color)
+    super(color)
     @symbol = "♟︎"
   end
 

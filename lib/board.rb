@@ -20,34 +20,11 @@ class Board
     puts "  a b c d e f g h "
   end
 
-  diagonal = [[1, 1], [-1, 1], [-1, -1], [1, -1]]
-  orthogonal = [[0, -1], [0, 1], [1, 0], [-1, 0]]
+  def check_moves(start)
+    piece = start.value
+    return [] if piece == "·"
 
-  # can this be simplified some more?
-    def all_moves(square, directions, array = [])
-      directions.each do |direction|
-        array << moves(square, direction)
-      end
-    end
-
-  def moves(square, direction, array = [])
-    # check the next_square. does it exist?
-    x, y = square.x + direction[0], square.y + direction[1]
-    return array unless x.between?(0, @board.length - 1) && y.between?(0, @board[0].length - 1)
-
-    next_square = @board[x][y]
-
-    # check if the next_square is occupied by friendly piece. if so, do not add square to list and return.
-    return array if next_square.value != "·" && next_square.value.color == "white"
-
-    # add square to list.
-    array << next_square
-
-    # look for another square only if the current square was empty.
-    moves(next_square, direction, array) if next_square.value == "·"
-
-    # return array.
-    array
+    piece.valid_moves(start, @board)
   end
 
   def starting_pieces
@@ -85,3 +62,30 @@ end
 # what do you want your board to do?
 # hold 64 squares.
 # if nothing is on the square, display ‧
+
+#   # can this be simplified some more?
+#   def all_moves(square, directions, array = [])
+#     directions.each do |direction|
+#       array << moves(square, direction)
+#     end
+#   end
+
+# def moves(square, direction, array = [])
+#   # check the next_square. does it exist?
+#   x, y = square.x + direction[0], square.y + direction[1]
+#   return array unless x.between?(0, @board.length - 1) && y.between?(0, @board[0].length - 1)
+
+#   next_square = @board[x][y]
+
+#   # check if the next_square is occupied by friendly piece. if so, do not add square to list and return.
+#   return array if next_square.value != "·" && next_square.value.color == "white"
+
+#   # add square to list.
+#   array << next_square
+
+#   # look for another square only if the current square was empty.
+#   moves(next_square, direction, array) if next_square.value == "·"
+
+#   # return array.
+#   array
+# end

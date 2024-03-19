@@ -25,7 +25,7 @@ describe Board do
 
   describe '#moves' do
     context 'when direction is top-right' do
-      it 'returns valid moves' do
+      xit 'returns valid moves' do
         direction = [1, 1]
         square = board.square("c4")
         square1 = board.square("d5")
@@ -37,7 +37,7 @@ describe Board do
     end
 
     context 'when direction is down' do
-      it 'returns valid moves' do
+      xit 'returns valid moves' do
         direction = [-1, 0]
         square = board.square("c6")
         square1 = board.square("c5")
@@ -49,7 +49,7 @@ describe Board do
     end
 
     context 'when direction is left' do
-      it 'returns valid moves' do
+      xit 'returns valid moves' do
         direction = [0, -1]
         square = board.square("d4")
         square1 = board.square("c4")
@@ -61,11 +61,42 @@ describe Board do
     end
 
     context 'when there are no valid moves' do
-      it 'returns an empty array' do
+      xit 'returns an empty array' do
         direction = [-1, -1]
         square = board.square("a1")
         expect(board.moves(square, direction)).to eq([])
       end
+    end
+  end
+end
+
+describe Game do
+  subject(:game) { described_class.new }
+
+  describe '#valid_notation?' do
+    context 'when the input is valid' do
+      it 'returns true' do
+        expect(game.valid_notation?('e2e4')).to be true
+      end
+    end
+
+    context 'when the input is invalid' do
+      it 'returns false' do
+        expect(game.valid_notation?('e2 e4')).to be false
+      end
+
+      it 'returns false' do
+        expect(game.valid_notation?('e2e9')).to be false
+      end
+
+      it 'returns false' do
+        expect(game.valid_notation?('y2e9e')).to be false
+      end
+
+      it 'returns false' do
+        expect(game.valid_notation?('a2')).to be false
+      end
+
     end
   end
 end

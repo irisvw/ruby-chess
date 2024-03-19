@@ -3,14 +3,16 @@ class Piece
 
   def initialize(color)
     @color = color
+    @diagonal = [[1, 1], [-1, 1], [-1, -1], [1, -1]]
+    @orthogonal = [[0, -1], [0, 1], [1, 0], [-1, 0]]
+    @all = @diagonal + @orthogonal
   end
 
-  def moves(square, direction, array = [])
+  def moves(square, direction, board, array = [])
     x, y = square.x + direction[0], square.y + direction[1]
-    return array unless x.between?(0, @board.length - 1) && y.between?(0, @board[0].length - 1)
+    return array unless x.between?(0, 7) && y.between?(0, 7)
 
-    next_square = @board[x][y]
-
+    next_square = board[x][y]
     return array if next_square.value != "·" && next_square.value.color == "white"
 
     array << next_square
@@ -18,59 +20,12 @@ class Piece
     array
   end
 
-  # def diagonal(square)
-  #   diagonal = [[1, 1], [-1, 1], [-1, -1], [1, -1]]
-  #   up_right = [1, 1]
-  #   down_right = [-1, 1]
-  #   down_left = [-1, -1]
-  #   up_left = [1, -1]
-
-  #   array = moves(square, up_right)
-  #   array << moves(square, down_right)
-  #   array << moves(square, down_left)
-  #   array << moves(square, up_left)
-  #   # get adjacent empty squares on the diagonal, until it runs into a piece. 
-  #   # keep square if enemy piece, discard square if friendly piece.
-  #   # return square if enemy square
-  # end
-
-  # def horizontal(square)
-  #   # get adjacent empty squares on the horizontal, until it runs into a piece. 
-  #   # keep square if enemy piece, discard square if friendly piece.
-  #   left = [0, -1]
-  #   right = [0, 1]
-
-  #   array = moves(square, left)
-  #   array << moves(square, right)
-  # end
-
-  # def vertical(square)
-  #   up = [1, 0]
-  #   down = [-1, 0]
-
-  #   array = moves(square, up)
-  #   array << moves(square, down)
-  #   # get adjacent empty squares on the vertical, until it runs into a piece. 
-  #   # keep square if enemy piece, discard square if friendly piece. 
-  # end
-
-  # diagonal = [[1, 1], [-1, 1], [-1, -1], [1, -1]]
-  # horizontal = [[0, -1], [0, 1]]
-  # vertical = [[1, 0], [-1, 0]]
-
-  # # can this be simplified some more?
-  #   def all_moves(square, directions, array = [])
-  #     directions.each do |direction|
-  #       array << moves(square, direction)
-  #     end
-  #   end
-
-  # def moves(square, direction, array = [])
-  #   return square if square.value != "." || square.nil?
-  #   next_square = square.x + direction[0], square.y + direction[1]
-
-  #   array << moves(, direction)
-  # end
+  def filter_moves(moves, color)
+    moves.keep_if { |move| move[0].between?(0, 7) && move[1].between?(0,7)}
+    moves.map! { |move| board[move[0]][move[1]]}
+    moves.delete_if { |square| square.value != "·" && square.value.color == color }
+    moves
+  end
 
   def to_s
     @symbol
@@ -85,13 +40,10 @@ class Queen < Piece
     @symbol = "♛"
   end
 
-  # def moves
-  #   # may move in any straight line, horizontal, vertical, or diagonal.
-  # end
-
-  def valid_moves(square, directions = orthogonal + diagonal, array = [])
+  # may move in any straight line, horizontal, vertical, or diagonal.
+  def valid_moves(square, board, directions = @all, array = [])
     directions.each do |direction|
-      array << moves(square, direction)
+      array << moves(square, direction, board)
     end
   end
 
@@ -104,9 +56,11 @@ class King < Piece
     @symbol = "♚"
   end
 
-  def valid_moves(x, y)
-    # moves one square in any direction, horizontally, vertically, or diagonally. (castling)
-    [[x-1, y-1], [x, y-1], [x+1, y-1], [x, y-1], [x, y+1], [x+1, y-1], [x+1, y], [x+1, y+1]]
+  # moves one square in any direction, horizontally, vertically, or diagonally. (castling)
+  def valid_moves(square, board)
+    x, y = square.x, square.y
+    moves = [[x-1, y-1], [x, y-1], [x+1, y-1], [x, y-1], [x, y+1], [x+1, y-1], [x+1, y], [x+1, y+1]]
+    filter_moves(moves, @color)
     # keep move if valid square and no friendly piece
   end
 
@@ -119,9 +73,14 @@ class Knight < Piece
     @symbol = "♞"
   end
 
-  def valid_moves(x, y)
-    # makes a move that consists of first one step in a horizontal or vertical direction, and then one step diagonally in an outward direction.
-    [[x-2, y+1], [x-2, y-1], [x-1, y+2], [x-1, y-2], [x+1, y+2], [x+1, y-2], [x+2, y+1], [x+2, y-1]]
+  # makes a move that consists of first one step in a horizontal or vertical direction, and then one step diagonally in an outward direction.
+  def valid_moves(square, board)
+    x, y = square.x, square.y
+    moves = [[x-2, y+1], [x-2, y-1], [x-1, y+2], [x-1, y-2], [x+1, y+2], [x+1, y-2], [x+2, y+1], [x+2, y-1]]
+    filter_moves(moves, @color)
+    # moves.keep_if { |move| move[0].between?(0, 7) && move[1].between?(0,7)}
+    # moves.map! { |move| board[move[0]][move[1]]}
+    # moves.delete_if { |element| element.value != "·" && element.value.color == "white" }
     # keep move if valid square and no friendly piece
   end
 
@@ -134,13 +93,10 @@ class Rook < Piece
     @symbol = "♜"
   end
 
-  # def moves
-  #   # moves in a straight line, horizontally or vertically.
-  # end
-
-  def valid_moves(square, directions = orthogonal, array = [])
+  # moves in a straight line, horizontally or vertically.
+  def valid_moves(square, board, directions = @orthogonal, array = [])
     directions.each do |direction|
-      array << moves(square, direction)
+      array << moves(square, direction, board)
     end
   end
 
@@ -153,13 +109,10 @@ class Bishop < Piece
     @symbol = "♝"
   end
 
-  # def moves
-  #   # moves in a straight diagonal line.
-  # end
-
-  def valid_moves(square, directions = diagonal, array = [])
+  # moves in a straight diagonal line.
+  def valid_moves(square, board, directions = @diagonal, array = [])
     directions.each do |direction|
-      array << moves(square, direction)
+      array << moves(square, direction, board)
     end
   end
 
@@ -172,10 +125,12 @@ class Pawn < Piece
     @symbol = "♟︎"
   end
 
-  def valid_moves
+  def valid_moves(square, board)
+    x, y = square.x, square.y
     # When a pawn does not take, it moves one square straight forward. 
     # When this pawn has not moved at all, the pawn may make a double step straight forward.
     # When taking, the pawn goes one square diagonally forward.
+    filter_moves(moves, @color)
   end
 
 end

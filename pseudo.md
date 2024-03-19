@@ -46,3 +46,6 @@ Piece
 - translate e2 to 1, 4
 - add direction to 1, 4 (eg direction = 1, 1) -> 2, 5
 - moves.include(e4?)
+
+### How to get corresponding moves from a certain piece, like a bishop?
+- The pieces don't know about the board and other pieces positions.

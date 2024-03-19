@@ -20,6 +20,16 @@ class Board
     puts "  a b c d e f g h "
   end
 
+  diagonal = [[1, 1], [-1, 1], [-1, -1], [1, -1]]
+  orthogonal = [[0, -1], [0, 1], [1, 0], [-1, 0]]
+
+  # can this be simplified some more?
+    def all_moves(square, directions, array = [])
+      directions.each do |direction|
+        array << moves(square, direction)
+      end
+    end
+
   def moves(square, direction, array = [])
     # check the next_square. does it exist?
     x, y = square.x + direction[0], square.y + direction[1]
@@ -75,7 +85,3 @@ end
 # what do you want your board to do?
 # hold 64 squares.
 # if nothing is on the square, display ‧
-
-# @board[0][0].value = "x"
-# @board[1][1].value = "x"
-# @board[6][6].value = "x"

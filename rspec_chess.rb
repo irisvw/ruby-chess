@@ -59,5 +59,13 @@ describe Board do
         expect(board.moves(square, direction)).to eq(valid_moves)
       end
     end
+
+    context 'when there are no valid moves' do
+      it 'returns an empty array' do
+        direction = [-1, -1]
+        square = board.square("a1")
+        expect(board.moves(square, direction)).to eq([])
+      end
+    end
   end
 end

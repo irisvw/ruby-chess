@@ -20,7 +20,7 @@ class Piece
     array
   end
 
-  def filter_moves(moves, color)
+  def filter_moves(moves, board, color)
     moves.keep_if { |move| move[0].between?(0, 7) && move[1].between?(0,7)}
     moves.map! { |move| board[move[0]][move[1]]}
     moves.delete_if { |square| square.value != "·" && square.value.color == color }
@@ -60,7 +60,7 @@ class King < Piece
   def valid_moves(square, board)
     x, y = square.x, square.y
     moves = [[x-1, y-1], [x, y-1], [x+1, y-1], [x, y-1], [x, y+1], [x+1, y-1], [x+1, y], [x+1, y+1]]
-    filter_moves(moves, @color)
+    filter_moves(moves, board, @color)
     # keep move if valid square and no friendly piece
   end
 
@@ -77,7 +77,7 @@ class Knight < Piece
   def valid_moves(square, board)
     x, y = square.x, square.y
     moves = [[x-2, y+1], [x-2, y-1], [x-1, y+2], [x-1, y-2], [x+1, y+2], [x+1, y-2], [x+2, y+1], [x+2, y-1]]
-    filter_moves(moves, @color)
+    filter_moves(moves, board, @color)
     # moves.keep_if { |move| move[0].between?(0, 7) && move[1].between?(0,7)}
     # moves.map! { |move| board[move[0]][move[1]]}
     # moves.delete_if { |element| element.value != "·" && element.value.color == "white" }
@@ -130,7 +130,7 @@ class Pawn < Piece
     # When a pawn does not take, it moves one square straight forward. 
     # When this pawn has not moved at all, the pawn may make a double step straight forward.
     # When taking, the pawn goes one square diagonally forward.
-    filter_moves(moves, @color)
+    filter_moves(moves, board, @color)
   end
 
 end

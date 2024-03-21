@@ -8,16 +8,29 @@ class Game
   end
 
   def play
-    @board.display
-    move = prompt_move
+    loop do
+      @board.display
+      move = get_move
+      @board.move_piece(move)
+      # break if check?
+      switch_player
+    end
   end
 
   def switch_player
     @current_player = (@current_player == @player1) ? @player2 : @player1
   end
 
+  def get_move
+    loop do
+      move = prompt_move 
+      return move if valid_move?(move)
+      puts "That move is invalid."
+    end
+  end
+
   def prompt_move
-    puts "#{@current_player}, what is your move? (format as a1a2)"
+    puts "#{@current_player.name}, what is your move? (format as a1a2)"
     loop do
       input = gets.chomp.downcase # e2e4
       return input if valid_notation?(input)
@@ -30,10 +43,10 @@ class Game
   end
 
   def valid_move?(move)
-    start = board.square(move[0,1])
-    goal = board.square(move[2,3])
+    start = @board.square(move[0,2])
+    goal = @board.square(move[2,3])
     
-    moves = board.check_moves(start)
+    moves = @board.check_moves(start)
     moves.include?(goal)
   end
 

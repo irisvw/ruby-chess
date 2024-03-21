@@ -27,6 +27,14 @@ class Board
     piece.valid_moves(start, @board)
   end
 
+  def move_piece(move)
+    start = square(move[0,2])
+    goal = square(move[2,3])
+
+    goal.value = start.value
+    start.value = "·"
+  end
+
   def starting_pieces
     place_piece(@board[1], Pawn.new("white"))
     place_piece(@board[6], Pawn.new("black"))

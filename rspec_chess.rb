@@ -68,6 +68,14 @@ describe Board do
       end
     end
   end
+
+  describe '#square' do
+    it 'translates a3 to board[0, 2]' do
+      boardboard = board.instance_variable_get(:@board)
+      square = boardboard[2][0]
+      expect(board.square("a3")).to eq(square)
+    end
+  end
 end
 
 describe Game do

@@ -49,3 +49,15 @@ Piece
 
 ### How to get corresponding moves from a certain piece, like a bishop?
 - The pieces don't know about the board and other pieces positions.
+
+### Fucking pawns
+- Three possible directions:
+- WHITE
+- [x+1, y] (normal move)
+- [x+1, y+1], [x+1, y-1] (capture/en-passant)
+- [x+2, y] (first move)
+
+- BLACK
+- [x-1, y] (normal move) - if space is empty
+- [x-1, y+1], [x-1, y-1] (capture/en-passant) - if enemy pawn is adjacent or diagonal
+- [x-2, y] (first move)

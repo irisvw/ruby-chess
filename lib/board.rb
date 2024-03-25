@@ -28,11 +28,16 @@ class Board
   end
 
   def move_piece(move)
-    start = square(move[0,2])
-    goal = square(move[2,3])
+    start = square(move[0..1])
+    goal = square(move[2..3])
 
     goal.value = start.value
+    goal.value.update(start, goal)
     start.value = "·"
+  end
+
+  def promote(square, player)
+    place_piece([square], Queen.new(player.color))
   end
 
   def starting_pieces

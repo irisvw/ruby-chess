@@ -54,8 +54,8 @@ class Game
     return false if piece.color != @current_player.color
 
     # check for castling here?
-    return castling? if piece.symbol == "♚" && ((start.y - goal.y).abs > 1)
-    return en_passant? if piece.symbol == "♟︎" && (start.x != goal.x && goal.value == "·")
+    #return castling? if piece.symbol == "♚" && ((start.y - goal.y).abs > 1)
+    #return en_passant? if piece.symbol == "♟︎" && (start.x != goal.x && goal.value == "·")
     
     moves = @board.check_moves(start)
     moves.include?(goal)
